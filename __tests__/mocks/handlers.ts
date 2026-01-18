@@ -176,4 +176,91 @@ export const handlers = [
       ],
     });
   }),
+
+  // Next.js API Routes - Exchange Rates
+  http.get('/api/exchange-rates', () => {
+    return HttpResponse.json([
+      {
+        exchangeRateId: 1,
+        currency: 'USD',
+        rate: 1320.50,
+        changePercentage: 0.42,
+        applyDateTime: new Date().toISOString(),
+      },
+      {
+        exchangeRateId: 2,
+        currency: 'JPY',
+        rate: 9.15,
+        changePercentage: 0.55,
+        applyDateTime: new Date().toISOString(),
+      },
+    ]);
+  }),
+
+  // Next.js API Routes - Wallets
+  http.get('/api/wallets', () => {
+    return HttpResponse.json([
+      { walletId: 1, currency: 'KRW', balance: 1000000 },
+      { walletId: 2, currency: 'USD', balance: 0 },
+      { walletId: 3, currency: 'JPY', balance: 0 },
+    ]);
+  }),
+
+  // Next.js API Routes - Quote
+  http.get('/api/quote', ({ request }) => {
+    const url = new URL(request.url);
+    const fromCurrency = url.searchParams.get('fromCurrency');
+    const toCurrency = url.searchParams.get('toCurrency');
+    const forexAmount = url.searchParams.get('forexAmount');
+
+    const rate = toCurrency === 'USD' ? 1320.50 : 9.15;
+    const amount = parseFloat(forexAmount || '0');
+
+    return HttpResponse.json({
+      krwAmount: fromCurrency === 'KRW' ? amount : Math.floor(amount * rate),
+      appliedRate: rate,
+    });
+  }),
+
+  // Next.js API Routes - Exchange
+  http.post('/api/exchange', async ({ request }) => {
+    const body = await request.json() as {
+      exchangeRateId: number;
+      fromCurrency: string;
+      toCurrency: string;
+      forexAmount: number;
+    };
+
+    return HttpResponse.json({
+      code: 'OK',
+      message: '정상적으로 처리되었습니다.',
+      data: null,
+    });
+  }),
+
+  // Next.js API Routes - Orders
+  http.get('/api/orders', ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '1');
+    const limit = parseInt(url.searchParams.get('limit') || '10');
+
+    const orders = [
+      {
+        orderId: 1,
+        fromCurrency: 'KRW',
+        fromAmount: 132050,
+        toCurrency: 'USD',
+        toAmount: 100,
+        appliedRate: 1320.50,
+        orderedAt: '2026-01-18T08:00:00Z',
+      },
+    ];
+
+    return HttpResponse.json({
+      orders,
+      total: orders.length,
+      page,
+      limit,
+    });
+  }),
 ];

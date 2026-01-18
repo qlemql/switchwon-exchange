@@ -50,7 +50,7 @@ describe('TransactionTable', () => {
   it('should format date correctly', () => {
     render(<TransactionTable orders={mockOrders} />);
     // 날짜 형식 확인 (로케일에 따라 달라질 수 있음)
-    expect(screen.getByText(/2024/)).toBeInTheDocument();
+    expect(screen.getAllByText(/2024/).length).toBeGreaterThan(0);
   });
 
   it('should show empty state when no orders', () => {

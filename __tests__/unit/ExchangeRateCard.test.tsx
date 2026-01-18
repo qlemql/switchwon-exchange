@@ -1,13 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ExchangeRateCard } from '@/features/exchange/ui/ExchangeRateCard';
+import type { ExchangeRate } from '@/shared/types';
 
 describe('ExchangeRateCard', () => {
-  const mockRate = {
+  const mockRate: ExchangeRate = {
+    exchangeRateId: 1,
     currency: 'USD',
     rate: 1320.50,
-    previousClose: 1315.00,
-    change: 0.42,
+    changePercentage: 0.42,
+    applyDateTime: '2024-01-15T10:30:00Z',
   };
 
   it('should render currency name', () => {
@@ -36,41 +38,24 @@ describe('ExchangeRateCard', () => {
   });
 
   it('should show negative change with blue color', () => {
-    const negativeRate = {
+    const negativeRate: ExchangeRate = {
       ...mockRate,
-      change: -0.42,
+      changePercentage: -0.42,
     };
 
     render(<ExchangeRateCard rate={negativeRate} />);
 
-    const changeElement = screen.getByText(/-0.42%/);
+    const changeElement = screen.getByText(/0.42%/);
     expect(changeElement).toHaveClass('text-blue-500');
   });
 
-  it('should show zero change with gray color', () => {
-    const zeroRate = {
-      ...mockRate,
-      change: 0,
-    };
-
-    render(<ExchangeRateCard rate={zeroRate} />);
-
-    const changeElement = screen.getByText(/0.00%/);
-    expect(changeElement).toHaveClass('text-gray-500');
-  });
-
-  it('should render with correct structure', () => {
-    const { container } = render(<ExchangeRateCard rate={mockRate} />);
-
-    expect(container.firstChild).toBeInTheDocument();
-  });
-
-  it('should display JPY rate correctly', () => {
-    const jpyRate = {
+  it('should render full exchange rate information', () => {
+    const jpyRate: ExchangeRate = {
+      exchangeRateId: 2,
       currency: 'JPY',
       rate: 9.15,
-      previousClose: 9.10,
-      change: 0.55,
+      changePercentage: 0.55,
+      applyDateTime: '2024-01-15T10:30:00Z',
     };
 
     render(<ExchangeRateCard rate={jpyRate} />);

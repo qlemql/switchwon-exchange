@@ -220,7 +220,7 @@ describe('LoginForm', () => {
 
     // 성공 토스트 표시
     await waitFor(() => {
-      expect(screen.getByText(/로그인 성공/i)).toBeInTheDocument();
+      expect(screen.getByText(/정상적으로 처리되었습니다/i)).toBeInTheDocument();
     });
   });
 });
