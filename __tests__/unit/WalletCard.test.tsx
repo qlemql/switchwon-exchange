@@ -4,7 +4,8 @@ import { WalletCard } from '@/features/exchange/ui/WalletCard';
 
 describe('WalletCard', () => {
   const mockWallet = {
-    currency: 'KRW',
+    walletId: 1,
+    currency: 'KRW' as const,
     balance: 1000000,
   };
 
@@ -22,7 +23,8 @@ describe('WalletCard', () => {
 
   it('should render USD wallet correctly', () => {
     const usdWallet = {
-      currency: 'USD',
+      walletId: 2,
+      currency: 'USD' as const,
       balance: 500.50,
     };
 
@@ -34,7 +36,8 @@ describe('WalletCard', () => {
 
   it('should render JPY wallet correctly', () => {
     const jpyWallet = {
-      currency: 'JPY',
+      walletId: 3,
+      currency: 'JPY' as const,
       balance: 10000,
     };
 
@@ -46,7 +49,8 @@ describe('WalletCard', () => {
 
   it('should render zero balance', () => {
     const zeroWallet = {
-      currency: 'USD',
+      walletId: 4,
+      currency: 'USD' as const,
       balance: 0,
     };
 
@@ -63,7 +67,8 @@ describe('WalletCard', () => {
 
   it('should display large balance correctly', () => {
     const largeWallet = {
-      currency: 'KRW',
+      walletId: 5,
+      currency: 'KRW' as const,
       balance: 9999999999,
     };
 
@@ -74,7 +79,8 @@ describe('WalletCard', () => {
 
   it('should display decimal balance for USD', () => {
     const decimalWallet = {
-      currency: 'USD',
+      walletId: 6,
+      currency: 'USD' as const,
       balance: 123.45,
     };
 
